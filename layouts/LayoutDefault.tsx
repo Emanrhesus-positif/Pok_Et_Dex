@@ -4,16 +4,16 @@ import "./tailwind.css";
 
 import React from "react";
 import logoUrl from "../assets/logo.svg";
-import { Link } from "../components/Link.js";
+import { Link } from "../components/Link.jsx";
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
     <div className={"flex max-w-5xl m-auto"}>
       <Sidebar>
         <Logo />
-        <Link href="/">Welcome</Link>
-        <Link href="/todo">Todo</Link>
-        <Link href="/star-wars">Data Fetching</Link>
+        <Link href="/">Accueil</Link>
+        <Link href="/team">Equipe</Link>
+        <Link href="/pokemon">Lister Pokemons</Link>
         {""}
       </Sidebar>
       <Content>{children}</Content>

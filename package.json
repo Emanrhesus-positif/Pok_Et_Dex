@@ -33,5 +33,11 @@
     "postcss": "^8.4.49",
     "autoprefixer": "^10.4.20"
   },
-  "type": "module"
+  "type": "module",
+  "name": "pok_et_dex",
+  "version": "1.0.0",
+  "description": "<!--bati:start section=\"document\"-->",
+  "main": "postcss.config.js",
+  "author": "",
+  "license": "ISC"
 }
