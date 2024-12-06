@@ -1,52 +1,39 @@
-// import { onNewPokemon } from "./Team.telefunc";
-// import React, { useState } from "react";
+import { useState } from "react";
+import { useData } from "vike-react/useData";
+import type { Data } from "./+data.js";
+import type { Note } from "@prisma/client";
+import { memo } from "react";
+import { onUpdate, onDelete } from "./Page.telefunc.js";
 
-// export function Team({ initialTodoItems }: { initialPokemons: { url: string }[] }) {
-//   const [pokemons, setPokemons] = useState(initialPokemons);
-//   const [newPokemon, setNewPokemon] = useState("");
-//   return (
-//     <>
-//       <ul>
-//         {pokemons.map((pokemon, index) => (
-//           // biome-ignore lint:
-//           <li key={index}>{pokemon.text}</li>
-//         ))}
-//       </ul>
-//       <div>
-//         <form
-//           onSubmit={async (ev) => {
-//             ev.preventDefault();
 
-//             // Optimistic UI update
-//             setPokemons((prev) => [...prev, { text: newPokemon }]);
-//             try {
-//               await onNewPokemon({ text: newPokemon });
-//               setNewPokemon("");
-//             } catch (e) {
-//               console.error(e);
-//               // rollback
-//               setPokemons((prev) => prev.slice(0, -1));
-//             }
-//           }}
-//         >
-//           <input
-//             type="text"
-//             onChange={(ev) => setNewPokemon(ev.target.value)}
-//             value={newPokemon}
-//             className={
-//               "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full sm:w-auto p-2 mr-1 mb-1"
-//             }
-//           />
-//           <button
-//             type="submit"
-//             className={
-//               "text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto p-2"
-//             }
-//           >
-//             Add pokemon
-//           </button>
-//         </form>
-//       </div>
-//     </>
-//   );
-// }
+const NoteList = memo(() => {
+    const data = useData<Data>();
+
+    const [notes, setNotes] = useState<Note[]>(data.notes);
+    const handleSuppression = async (id: number) => {
+        await onDelete(id);
+        setNotes(notes.filter((note) => note.id !== id));
+    };
+    const handleModification = async (id: number) => {
+        await onUpdate(id,"Nouveau titre");
+    };
+
+  return (
+    <div>
+      <h1>Notes</h1>
+      <ul>
+        {notes.map((note) => (
+          <li key={note.id}>
+              <a>{note.title}</a>
+              <button onClick={() => handleSuppression(note.id)}>Supprimer</button>
+              <button onClick={() => handleModification(note.id)}>Modifier</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+});
+
+NoteList.displayName = "NoteList";
+
+export default NoteList;
