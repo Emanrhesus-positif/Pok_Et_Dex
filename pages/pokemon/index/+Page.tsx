@@ -15,11 +15,11 @@ export default function Page() {
 	//corriger : l'api est appellée 2 fois au reset ??? (passage de 2 fois 30 pokémons)
 	//corriger : l'api enregistre tous les pokémons au lancement ??? (passage de 1000 + id pokémons)
 	useEffect(() => {
+		setReset(false);
 		const fetchData = async () => {
 		  setCurrentPokemons(await extendedData(limit, offset));
 		};
 		fetchData();
-		setReset(false);
 	  }, [offset, reset]);
 	  
 	useEffect(() => {
@@ -42,7 +42,7 @@ export default function Page() {
 
 	const handleSearch = async (searchString: string) => {
 		//filter from currentPokemons, if search is empty, search from all pokemons on a new search on the api
-		if (searchString === "" || searchString.length <= 2) {
+		if (searchString === "") {
 			setReset(true);
 		}
 		else if (searchString !== "" && searchString.length > 2) {

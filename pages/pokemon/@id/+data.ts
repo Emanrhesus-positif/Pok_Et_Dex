@@ -20,7 +20,6 @@ export const data = async (pageContext: PageContextServer) => {
   });
   // We remove data we don't need because the data is passed to
   // the client; we should minimize what is sent over the network.
-  console.log("=======================BEFORE MINIMIZE=================", pokemon);
 
   return pokemon;
 };
