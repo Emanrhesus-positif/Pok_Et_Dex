@@ -7,8 +7,6 @@ import { useConfig } from "vike-react/useConfig";
 export type Data = Awaited<ReturnType<typeof data>>;
 
 export const data = async (pageContext: PageContextServer) => {
-  // https://vike.dev/useConfig
-  const config = useConfig();
 
   console.log(pageContext.routeParams.id);
   
@@ -29,11 +27,6 @@ export const data = async (pageContext: PageContextServer) => {
   if (nameInFrench) {
     pokemon.name = nameInFrench;
   }
-
-  config({
-    // Set <title>
-    title: `${pokemon.name}`,
-  });
 
   // We remove data we don't need because the data is passed to
   // the client; we should minimize what is sent over the network.

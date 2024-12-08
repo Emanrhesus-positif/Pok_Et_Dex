@@ -32,7 +32,7 @@ export const Resume = () => {
 	return (
 		<div key="">
 			<section className="titleImage">
-				<h1 className="pokemonTitle">{pokemon.name}</h1>
+				<h1 className="pokemonName">{pokemon.name}</h1>
 				<img className="frontSprite" src={frontSprite} alt={pokemon.name} />
 				<img className="backSprite" src={backSprite} alt={pokemon.name} />
 				<button onClick={() => setActiveSprite("default")}>Default</button>

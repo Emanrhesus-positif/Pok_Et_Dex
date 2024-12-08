@@ -42,7 +42,6 @@ export default function Page() {
 	}
 
 	const handleSearch = async (searchString: string) => {
-		let searchPhrase = searchString.charAt(0).toUpperCase() + searchString.slice(1);
 
 		//filter from currentPokemons, if search is empty, search from all pokemons on a new search on the api
 		if (searchString === "") {
@@ -50,7 +49,7 @@ export default function Page() {
 			changeOffset(0);
 		}
 		else if (searchString !== "" && searchString.length > 2) {
-			searchPokemonData(searchPhrase);
+			searchPokemonData(searchString);
 		};	
 	};
 

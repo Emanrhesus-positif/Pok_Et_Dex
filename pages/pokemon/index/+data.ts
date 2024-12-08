@@ -7,7 +7,6 @@ export type Data = Awaited<ReturnType<typeof data>>;
 
 export const data = async () => {
 	// https://vike.dev/useConfig
-	const config = useConfig();
 
   const limitoffset = `?limit=30&offset=0`;
 
@@ -32,11 +31,7 @@ export const data = async () => {
     }
   }
 
-  config({
-    // Set <title>
-    title: `${extractedPokemons.length} pokemons`,
-  });
-
+ 
   const pokemons = { count: countData, pokemon: minimize(extractedPokemons) };
   return pokemons;
 };
@@ -67,6 +62,7 @@ export const extendedData = async (limit: number, offset: number) => {
   return pokemons;
 }
 export const searchPokemon = async (searchString: string) => {
+  let searchPhrase = searchString.charAt(0).toUpperCase() + searchString.slice(1);
 	const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/`);
 	const pokemonData = (await response.json());
 	const countData = pokemonData.count;
@@ -77,7 +73,7 @@ export const searchPokemon = async (searchString: string) => {
 		const languageData = await response.json();
 	
 		let filteredNames = languageData.names.filter(
-		  (nameObj) => nameObj.language.name === "fr" && nameObj.name.includes(searchString)
+		  (nameObj) => nameObj.language.name === "fr" && nameObj.name.includes(searchPhrase)
 		);
 	
 		if (filteredNames.length > 0) {
