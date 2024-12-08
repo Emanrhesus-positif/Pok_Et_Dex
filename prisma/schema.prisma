@@ -17,6 +17,8 @@ model Pokemon {
   id        Int      @id @default(autoincrement())
   name      String
   imageUrl  String
+  url       String
+  types     String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

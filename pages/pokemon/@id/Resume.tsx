@@ -27,35 +27,105 @@ export const Resume = () => {
 				setBackSprite(pokemon.sprites.back_shiny_female);
 				break;
 		}
-	} , [activeSprite]);
+	}, [activeSprite]);
 
 	return (
-		<div key="">
-			<section className="titleImage">
-				<h1 className="pokemonName">{pokemon.name}</h1>
-				<img className="frontSprite" src={frontSprite} alt={pokemon.name} />
-				<img className="backSprite" src={backSprite} alt={pokemon.name} />
-				<button onClick={() => setActiveSprite("default")}>Default</button>
-				<button onClick={() => setActiveSprite("shiny")}>Shiny</button>
-				{pokemon.sprites.front_female != null ? (
-					<button onClick={() => setActiveSprite("female")}>Femelle</button>
-				) : null}
-				{pokemon.sprites.front_shiny_female != null ? (
-					<button onClick={() => setActiveSprite("shiny_female")}>Shiny female</button>
-				) : null}
+		<div
+			key=""
+			className="p-6 bg-gray-50 rounded-lg shadow-md border border-gray-200"
+		>
+			<section className="titleImage text-center mb-6">
+				<h1 className="pokemonName text-3xl font-bold text-gray-800 mb-4">
+					{pokemon.name}
+				</h1>
+				<div className="flex justify-center gap-4 mb-4">
+					<img
+						className="frontSprite w-24 h-24"
+						src={frontSprite}
+						alt={`${pokemon.name} front sprite`}
+					/>
+					<img
+						className="backSprite w-24 h-24"
+						src={backSprite}
+						alt={`${pokemon.name} back sprite`}
+					/>
+				</div>
+				<div className="flex flex-wrap justify-center gap-2">
+					<button
+						onClick={() => setActiveSprite("default")}
+						className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+					>
+						Default
+					</button>
+					<button
+						onClick={() => setActiveSprite("shiny")}
+						className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+					>
+						Shiny
+					</button>
+					{pokemon.sprites.front_female && (
+						<button
+							onClick={() => setActiveSprite("female")}
+							className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+						>
+							Femelle
+						</button>
+					)}
+					{pokemon.sprites.front_shiny_female && (
+						<button
+							onClick={() => setActiveSprite("shiny_female")}
+							className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+						>
+							Shiny Female
+						</button>
+					)}
+				</div>
 			</section>
-			<section className="detailedInfo">
-				<h2>Types : {pokemon.types.map((type, index) => (
-					<span key={index}>{type.type.name}{index < pokemon.types.length - 1 ? ', ' : ''}</span>
-				))}</h2>
-				<h2>Height: {pokemon.height}</h2>
-				<h2>Weight: {pokemon.weight}</h2>
-				<h2>Base experience: {pokemon.base_experience}</h2>
-				<h2>Order: {pokemon.order}</h2>
-				<h2>Is default: {pokemon.is_default ? "Yes" : "No"}</h2>
-				<h2>Is legendary: {pokemon.is_legendary ? "Yes" : "No"}</h2>
-				<h2>Is mythical: {pokemon.is_mythical ? "Yes" : "No"}</h2>
+			<section className="detailedInfo bg-white rounded-lg p-4 shadow-inner border">
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Types:{" "}
+					<span className="text-gray-600">
+						{pokemon.types.map((type, index) => (
+							<span key={index}>
+								{type.type.name}
+								{index < pokemon.types.length - 1 ? ", " : ""}
+							</span>
+						))}
+					</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Height: <span className="text-gray-600">{pokemon.height}</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Weight: <span className="text-gray-600">{pokemon.weight}</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Base Experience:{" "}
+					<span className="text-gray-600">{pokemon.base_experience}</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Order: <span className="text-gray-600">{pokemon.order}</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Is Default:{" "}
+					<span className="text-gray-600">
+						{pokemon.is_default ? "Yes" : "No"}
+					</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Is Legendary:{" "}
+					<span className="text-gray-600">
+						{pokemon.is_legendary ? "Yes" : "No"}
+					</span>
+				</h2>
+				<h2 className="text-lg font-semibold text-gray-700 mb-2">
+					Is Mythical:{" "}
+					<span className="text-gray-600">
+						{pokemon.is_mythical ? "Yes" : "No"}
+					</span>
+				</h2>
 			</section>
 		</div>
+
 	);
 };
