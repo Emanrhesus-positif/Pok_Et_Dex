@@ -3,7 +3,7 @@ import { useData } from "vike-react/useData";
 import type { Data } from "./+data.js";
 
 export const Stats = () => {
-  const { pokemon } = useData<Data>();
+  const pokemon = useData<Data>();
 
   return (
     <section className="statsSection p-6 bg-gray-50 rounded-lg shadow-md border">

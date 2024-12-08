@@ -3,7 +3,7 @@ import { useData } from "vike-react/useData";
 import type { Data } from "./+data.js";
 
 export const Evolutions = () => {
-  const { evolutionChain } = useData<Data>();
+  const evolutionChain = useData<Data>();
 
   const getEvolutions = (chain) => {
     const evolutions = [];
