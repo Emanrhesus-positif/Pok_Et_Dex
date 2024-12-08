@@ -33,7 +33,6 @@ export const searchPokemon = async (searchString: string) => {
 		}
 	  }
 	
-	  console.log(extractedPokemons);
 	  let extractedPokemons2 = { count : countData, pokemon: minimize(extractedPokemons)};
 	  return extractedPokemons2;
 

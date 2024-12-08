@@ -23,7 +23,7 @@ export default function Page() {
 
     try {
       const results = await searchPokemon(pokemonName);
-      console.log("results", results);
+
       setSearchResults(results);
     } catch (err) {
       setError("Pokemon non trouvé");
@@ -37,7 +37,6 @@ export default function Page() {
     }
 
     try {
-      console.log("pokemon", pokemon);
       const addedPokemon = await onCreatePokemon(pokemon.name, pokemon.url);
       setPokemons((prevPokemons) => [...prevPokemons, addedPokemon]);
     } catch (err) {

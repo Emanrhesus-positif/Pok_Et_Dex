@@ -12,14 +12,12 @@ export default function Page() {
 	const [pokemonInfo, setPokemonInfo] = useState(<Resume/>);
 	
 	useEffect(() => {
-		console.log(content);
 		setPokemonInfo(
 			content === "Resume" ? <Resume/> :
 			content === "abilities" ? <Abilities/> :
 			content === "stats" ? <Stats/> :
 			content === "evolutions" ? <Evolutions/> : <Resume/>
 		);
-		console.log(pokemonInfo);
 
 	}, [content]);
 
