@@ -9,56 +9,95 @@ export const data = async () => {
 	// https://vike.dev/useConfig
 	const config = useConfig();
 
-	const limitoffset = `?limit=30&offset=30`;
+  const limitoffset = `?limit=30&offset=0`;
 
-	const response = await fetch(`https://pokeapi.co/api/v2/pokemon${limitoffset}`);
-	const pokemonsData = (await response.json()) as PokemonDetails[];
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species${limitoffset}`);
+  const pokemonsData = await response.json();
+  const countData = pokemonsData.count;
+  let extractedPokemons: { id: number; name: string }[] = [];
 
-	config({
-		// Set <title>
-		title: `${pokemonsData.length} pokemons`,
-	});
+  for (let i = 1; i <= 30; i++) {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+    const languageData = await response.json();
 
-	// We remove data we don't need because the data is passed to the client; we should
-	// minimize what is sent over the network.
-	const pokemons = { count: pokemonsData.count, pokemon: minimize(pokemonsData) };
-	return pokemons;
+    const filteredNames = languageData.names.filter(
+      (nameObj: { language: { name: string }; name: string }) => nameObj.language.name === "fr"
+    );
+
+    if (filteredNames.length > 0) {
+      extractedPokemons.push({
+        id: i,
+        name: filteredNames[0].name,
+      });
+    }
+  }
+
+  config({
+    // Set <title>
+    title: `${extractedPokemons.length} pokemons`,
+  });
+
+  const pokemons = { count: countData, pokemon: minimize(extractedPokemons) };
+  return pokemons;
 };
 
 export const extendedData = async (limit: number, offset: number) => {
-	const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-	const pokemonsData = (await response.json()) as PokemonDetails[];
+	const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species?limit=${limit}&offset=${offset}`);
+  const pokemonsData = await response.json();
+  const countData = pokemonsData.count;
+  let extractedPokemons: { id: number; name: string }[] = [];
 
-	const pokemons = { count: pokemonsData.count, pokemon: minimize(pokemonsData) };
+  for (let i = 1; i <= 30; i++) {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i+offset}`);
+    const languageData = await response.json();
 
-	return pokemons;
+    const filteredNames = languageData.names.filter(
+      (nameObj: { language: { name: string }; name: string }) => nameObj.language.name === "fr"
+    );
+
+    if (filteredNames.length > 0) {
+      extractedPokemons.push({
+        id: i+offset,
+        name: filteredNames[0].name,
+      });
+    }
+  }
+
+  const pokemons = { count: countData, pokemon: minimize(extractedPokemons) };
+  return pokemons;
 }
-export const searchPokemon = async (searchString: string, max: number) => {
+export const searchPokemon = async (searchString: string) => {
+	const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/`);
+	const pokemonData = (await response.json());
+	const countData = pokemonData.count;
 	let extractedPokemons: PokemonDetails[] = [];
-	const searchUrl = `https://pokeapi.co/api/v2/pokemon-species`;
-	const response = await fetch({searchUrl});
-	const countData = (await response.json());
 
-	for(let i = 1; i <= countData.count; i++) {
-	const response = await fetch(`${searchUrl}/${i}`);
-	const languageData = (await response.json());
-	console.log(languageData);
-	}
-	// languageData.names.filter((languages) => languages.language.includes("fr")) && languageData.names.filter((languages) => languages.name.includes(searchString))};
-
+	for (let i = 1; i <= countData; i++) {
+		const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+		const languageData = await response.json();
 	
-	//extractedPokemons = {results: pokemonsData.results.filter((pokemon) => pokemon.name.includes(searchString))};
-	const pokemons="3";
-	// const pokemons = { count: max, pokemon: minimize(extractedPokemons) };
-	return pokemons;
+		let filteredNames = languageData.names.filter(
+		  (nameObj) => nameObj.language.name === "fr" && nameObj.name.includes(searchString)
+		);
+	
+		if (filteredNames.length > 0) {
+		  extractedPokemons.push({
+			id: i,
+			name: filteredNames[0].name,
+		  });
+		}
+	  }
+	
+	  console.log(extractedPokemons);
+	  let extractedPokemons2 = { count : countData, pokemon: minimize(extractedPokemons)};
+	  return extractedPokemons2;
 
 };
 
 function minimize(pokemons: PokemonDetails[]): Pokemon[] {
-	return pokemons.results.map((pokemon) => {
-		const id = pokemon.url.split("/")[6];
-		//check what transits in this function and how many times
-		const { name, url } = pokemon;
+	return pokemons.map((pokemon) => {
+		const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.id;
+		const { name, id } = pokemon;
 		return { name, url, id };
 	});
 }

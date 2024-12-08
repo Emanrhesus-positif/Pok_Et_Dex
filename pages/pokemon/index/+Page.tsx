@@ -10,30 +10,31 @@ export default function Page() {
 
 	const pokemons = useData<Data>();
 	const [currentPokemons, setCurrentPokemons] = useState(pokemons);
-	const [search, setSearch] = useState("");
 
-	//corriger : l'api est appellée 2 fois au reset ??? (passage de 2 fois 30 pokémons)
-	//corriger : l'api enregistre tous les pokémons au lancement ??? (passage de 1000 + id pokémons)
-	useEffect(() => {
-		setReset(false);
+	const changeOffset = async (offset: number) => {
 		const fetchData = async () => {
 		  setCurrentPokemons(await extendedData(limit, offset));
 		};
 		fetchData();
-	  }, [offset, reset]);
-	  
-	useEffect(() => {
+	}
+	const searchPokemonData = async (search: string) => {
 		const fetchData = async () => {
-			setCurrentPokemons(await searchPokemon(search, pokemons.count));
+			setCurrentPokemons(
+				await searchPokemon(search)
+			);
 		}
 		fetchData();
-	}, [search]);
+	}
 
-	const handleOther = async (operator: number, offset: number) => {
+	const handleOther = async (operator: number) => {
 		if (operator === 1 && offset <= pokemons.count) {
-			setOffset(offset + 30);
+			let newOffset = offset + 30;
+			setOffset(newOffset);
+			changeOffset(newOffset);
 		} else if (operator === 2 && offset >= 30) {
-			setOffset(offset - 30);
+			let newOffset = offset - 30;
+			setOffset(newOffset);
+			changeOffset(newOffset);
 		}
 	};
 	const handleReset = async () => {
@@ -41,12 +42,15 @@ export default function Page() {
 	}
 
 	const handleSearch = async (searchString: string) => {
+		let searchPhrase = searchString.charAt(0).toUpperCase() + searchString.slice(1);
+
 		//filter from currentPokemons, if search is empty, search from all pokemons on a new search on the api
 		if (searchString === "") {
 			setReset(true);
+			changeOffset(0);
 		}
 		else if (searchString !== "" && searchString.length > 2) {
-			setSearch(searchString);
+			searchPokemonData(searchPhrase);
 		};	
 	};
 
@@ -55,9 +59,10 @@ export default function Page() {
 			<div className="listWrapper">
 				<section className="searchNavWrapper">
 				<button onClick={() => setReset(true)}>Reset</button>
-					<input onChange={(event) => handleSearch(event.target.value)} type="text" placeholder="Filtrer un pokemon" />
-					<button onClick={() => handleOther(2, offset)}>Previous</button>
-					<button onClick={() => handleOther(1, offset)}>Next</button>
+					<input id="searchInput" type="text" placeholder="Filtrer un pokemon" />
+					<button onClick={() => handleSearch((document.getElementById('searchInput') as HTMLInputElement).value)}>Search</button>
+					<button onClick={() => handleOther(2)}>Previous</button>
+					<button onClick={() => handleOther(1)}>Next</button>
 					
 				</section>
 				<section className="articlesWrapper">
