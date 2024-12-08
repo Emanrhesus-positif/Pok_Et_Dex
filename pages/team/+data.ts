@@ -42,6 +42,6 @@ function minimize(pokemons: PokemonDetails[]): Pokemon[] {
 	return pokemons.map((pokemon) => {
 		const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon.id;
 		const { name, id } = pokemon;
-		return { name, url, id };
+		return { name, url, id};
 	});
 }

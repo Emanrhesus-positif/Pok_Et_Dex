@@ -103,7 +103,9 @@ export default function Page() {
 							>
 								{item.name}
 							</a>
-							<p className="text-sm text-gray-400">{item.url}</p>
+							{/* { item.types.length > 0 && (
+								<p className="text-sm text-gray-500 mb-2">Type: {item.types[0].type.name}</p>
+							)} */}
 							<img
 								src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png`}
 								alt={item.name}
